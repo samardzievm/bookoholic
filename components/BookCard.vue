@@ -7,12 +7,12 @@
       <div class="">
         <!-- image -->
         <img :src="book.imageLinks.thumbnail" :alt="`${book.title} Image`"
-             class="m-auto w-full h-fit">
+             class="m-auto w-fit h-32">
         <!-- end image-->
 
         <!-- book title-->
         <h4 class="font-bold hover:underline pt-3">
-          <a href="#">{{ book.title }}</a>
+          <NuxtLink :to="`book/${id}`">{{ book.title }}</NuxtLink>
         </h4>
         <!-- end book title-->
       </div>
@@ -20,7 +20,7 @@
 
       <!-- description-->
       <div class="py-3">
-        <p class="text-sm text-justify">{{ book.description }}</p>
+        <p class="text-sm text-justify">{{ getShortDescription(book.description) }}</p>
       </div>
       <!--  end description-->
 
@@ -33,9 +33,10 @@
         <!-- end rating-->
 
         <!-- link to details page-->
-        <a href="#" class="text-white px-3 py-1 text-sm fond-semibold bg-red-700 hover:bg-red-600 rounded-r-lg">
+        <NuxtLink :book="book" :to="`book/${id}`"
+                  class="text-white px-3 py-1 text-sm fond-semibold bg-red-700 hover:bg-red-600 rounded-r-lg">
           Learn More
-        </a>
+        </NuxtLink>
         <!-- end link to details page-->
       </div>
       <!-- end bottom-->
@@ -45,7 +46,11 @@
 </template>
 
 <script setup>
-defineProps(['book'])
+defineProps(['book', 'id'])
+
+function getShortDescription(text) {
+  return text.slice(0, 128);
+}
 
 function columnSizeByRatingClass(rating) {
   if (rating >= 4.0) return "lg:col-span-2 lg:row-span-2";
